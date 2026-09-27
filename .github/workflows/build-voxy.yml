@@ -1,0 +1,31 @@
+name: Build Voxy 26.3
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Voxy 26.3
+        uses: actions/checkout@v4
+        with:
+          repository: MCRcortex/voxy
+          ref: 263
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Build
+        run: ./gradlew build
+
+      - name: Upload Voxy JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: voxy-263
+          path: build/libs/*.jar
+          if-no-files-found: error
